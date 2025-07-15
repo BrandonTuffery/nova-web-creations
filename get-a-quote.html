@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get a Quote | NovaWeb Creations</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    .hidden-nav { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="sticky-nav">
+      <div class="logo">
+        <img src="novaweb-logo.png" alt="NovaWeb Creations Logo" height="56" style="vertical-align:middle; margin-right:14px; border-radius:50%; background:#fff;">
+        <span>NOVAWEB CREATIONS</span>
+      </div>
+      <ul>
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <section class="hero" id="quote-hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>Get a Free Quote</h1>
+        <p>Tell us about your project and we'll get back to you with a custom quote.</p>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="signup" id="get-quote">
+      <h2>Request a Quote</h2>
+      <form action="http://localhost:3002/api/quote" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="business" placeholder="Your Business / Website (optional)">
+        <input type="text" name="budget" placeholder="Project Budget (optional)">
+        <textarea name="details" placeholder="Tell us about your project, goals, and any features you need..." required style="flex:1 1 100%;min-height:100px;padding:0.7rem;border-radius:6px;border:none;background:#1a2b47;color:#fff;border-bottom:2px solid #1ec6e6;"></textarea>
+        <label style="margin: 1rem 0 0.5rem 0; color: #1ec6e6; font-weight: 700; display: block;">Upload Reference Files or Images (optional)</label>
+        <input type="file" name="referenceFiles" multiple style="margin-bottom: 1rem; color: #fff;">
+        <div id="captcha-container" style="margin:1rem 0;">
+          <label id="captcha-label" style="color:#1ec6e6;font-weight:700;"></label>
+          <input type="text" id="captcha-input" placeholder="Answer" required style="margin-left:10px;width:60px;">
+        </div>
+        <button type="submit">Request Quote</button>
+      </form>
+      <div id="quote-success-message" style="display:none; color:#1ec6e6; font-weight:700; margin-top:2rem; font-size:1.2rem; text-align:center;">Thank you for your request! You will receive a response within 5 working days.</div>
+      <script>
+        // Simple math captcha
+        var a = Math.floor(Math.random() * 10) + 1;
+        var b = Math.floor(Math.random() * 10) + 1;
+        var captchaAnswer = a + b;
+        document.getElementById('captcha-label').textContent = 'What is ' + a + ' + ' + b + '?';
+
+        document.querySelector('form[action="http://localhost:3002/api/quote"]')
+          .addEventListener('submit', function(e) {
+            var captchaInput = document.getElementById('captcha-input').value;
+            if (parseInt(captchaInput, 10) !== captchaAnswer) {
+              e.preventDefault();
+              alert('Captcha answer is incorrect. Please try again.');
+              return;
+            }
+            e.preventDefault();
+            var form = this;
+            var formData = new FormData(form);
+            fetch(form.action, {
+              method: 'POST',
+              body: formData
+            })
+            .then(function(response) {
+              if (response.ok) {
+                form.style.display = 'none';
+                var msg = document.getElementById('quote-success-message');
+                if (msg) msg.style.display = 'block';
+              } else {
+                return response.json().then(function(data) {
+                  alert('There was an error submitting the form: ' + (data.error || 'Unknown error'));
+                });
+              }
+            })
+            .catch(function(error) {
+              alert('There was an error submitting the form: ' + error.message);
+            });
+          });
+      </script>
+</html>

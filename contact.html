@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | NovaWeb Creations</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="sticky-nav">
+      <div class="logo">
+        <img src="novaweb-logo.png" alt="NovaWeb Creations Logo" height="56" style="vertical-align:middle; margin-right:14px; border-radius:50%; background:#fff;">
+        <span>NOVAWEB CREATIONS</span>
+      </div>
+      <ul>
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <section class="hero" id="contact-hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>Contact Us</h1>
+        <p>Let's start your web journey together!</p>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="signup" id="contact">
+      <h2>Get in Touch</h2>
+      <form id="contact-form" action="http://localhost:3001/api/contact" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="business" placeholder="Your Business / Website (optional)">
+        <textarea name="details" placeholder="How can we help you?" required style="flex:1 1 100%;min-height:80px;padding:0.7rem;border-radius:6px;border:none;background:#1a2b47;color:#fff;border-bottom:2px solid #1ec6e6;"></textarea>
+        <div style="margin: 1rem 0 0.5rem 0; color: #1ec6e6; font-weight: 700;">
+          <label for="contact-captcha">What is <span id="contact-captcha-question"></span>? (anti-spam)</label>
+          <input type="text" id="contact-captcha" name="captcha" required style="margin-left: 0.5rem; width: 80px;">
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+      <div id="contact-success-message" style="display:none; color:#1ec6e6; font-weight:700; margin-top:2rem; font-size:1.2rem; text-align:center;">Thank you for contacting us! You will receive a response within 5 working days.</div>
+      <script>
+        // Simple math captcha for contact form
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+          const contactA = Math.floor(Math.random() * 10) + 1;
+          const contactB = Math.floor(Math.random() * 10) + 1;
+          const captchaQ = document.getElementById('contact-captcha-question');
+          if (captchaQ) captchaQ.textContent = `${contactA} + ${contactB}`;
+          contactForm.addEventListener('submit', async function(e) {
+            const answer = document.getElementById('contact-captcha').value;
+            if (parseInt(answer, 10) !== contactA + contactB) {
+              alert('Captcha answer is incorrect. Please try again.');
+              e.preventDefault();
+              return;
+            }
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            try {
+              const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData
+              });
+              if (response.ok) {
+                contactForm.style.display = 'none';
+                document.getElementById('contact-success-message').style.display = 'block';
+              } else {
+                alert('There was an error submitting your request. Please try again later.');
+              }
+            } catch (err) {
+              alert('There was an error submitting your request. Please try again later.');
+            }
+          });
+        }
+      </script>
+      <p>We're a new business and excited to help you get started online. We'll reply as soon as possible!</p>
+    </section>
+    <section class="album" id="contact-details">
+      <h2>Contact Details</h2>
+      <ul class="gig-list">
+        <li><strong>Email:</strong> <a href="mailto:hello@novawebcreations.com">hello@novawebcreations.com</a></li>
+        <li><strong>Location:</strong> [Your Location]</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="social">
+      <a href="#" target="_blank" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" height="24"></a>
+      <a href="#" target="_blank" aria-label="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" height="24"></a>
+      <a href="#" target="_blank" aria-label="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" height="24"></a>
+    </div>
+    <p>&copy; 2025 NovaWeb Creations</p>
+    <p>Website by NovaWeb Creations</p>
+  </footer>
+</body>
+</html>
