@@ -25,7 +25,12 @@
         <img src="/Users/megankeogh/Documents/New Website/IMG_1545.PNG" alt="NovaWeb Creations - Modern Web Design Logo" height="56" style="vertical-align:middle; margin-right:14px; border-radius:50%; background:#fff;">
         <span>NOVAWEB CREATIONS</span>
       </div>
-      <ul>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <ul class="nav-links">
         <li><a href="#home">Home</a></li>
         <li><a href="services.html">Services</a></li>
         <li><a href="portfolio.html">About</a></li>
@@ -67,6 +72,19 @@
   </main>
 
   <footer>
+  <script>
+    // Mobile nav toggle (wait for DOM)
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      if (navToggle && navLinks) {
+        navToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('open');
+          navToggle.classList.toggle('open');
+        });
+      }
+    });
+  </script>
     <div class="social">
       <a href="https://www.instagram.com/YOUR_INSTAGRAM_USERNAME" target="_blank" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" height="24"></a>
       <a href="https://www.facebook.com/YOUR_FACEBOOK_PAGE" target="_blank" aria-label="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" height="24"></a>
